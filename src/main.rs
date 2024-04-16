@@ -97,9 +97,15 @@ async fn process_documents(client: &Client, ollama: &Ollama, model: &str, base_u
        delimiting the json object ".to_string()
     );
     let fields = query_custom_fields(client, base_url).await?;
+    // Print the contents of fields
+    println!("Fields: {:?}", fields);
     match get_data_from_paperless(&client, &base_url).await {
         Ok(data) => {
+            // Print the contents of data
+            println!("Data: {:?}", data);
             for document in data {
+                // Print the contents of document
+                println!("Document: {:?}", document);
                 let res = generate_response(ollama, &model.to_string(), &prompt_base.to_string(), &document).await?;
                 if let Some(json_str) = extract_json_object(&res.response) {
                     match serde_json::from_str(&json_str) {
